@@ -1,0 +1,7 @@
+{
+  "name": "hakwonjigiApp",
+  "integrations": {
+    "cordova": {}
+  },
+  "type": "ionic-angular"
+}
