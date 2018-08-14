@@ -15,7 +15,7 @@ import { IonicPage, ViewController, NavParams } from 'ionic-angular';
 })
 export class ModalPage {
 
-  constructor(public navCtrl: ViewController, public navParams: NavParams) {
+  constructor(public navParams: NavParams, private viewCtrl: ViewController) {
   }
 
   ionViewDidLoad() {
@@ -23,6 +23,10 @@ export class ModalPage {
   }
 
   closeModal() {
-    this.navCtrl.dismiss();
+    const data = {
+      name : "test"
+    };
+
+    this.viewCtrl.dismiss(data);
   }
 }

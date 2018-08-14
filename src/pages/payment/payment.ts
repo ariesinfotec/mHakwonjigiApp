@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, AlertController, ModalController, ModalOptions, LoadingController } from 'ionic-angular';
+import { Modal, NavController, AlertController, ModalController, ModalOptions, LoadingController } from 'ionic-angular';
 import { HttpClient } from '@angular/common/http';
 
 @Component({
@@ -24,6 +24,9 @@ export class PaymentPage {
 
   }
 
+  /*
+    로딩 테스트.
+  */
   presentLoading() {
     const loader = this.loadingCtrl.create({
       duration : 3000
@@ -36,12 +39,20 @@ export class PaymentPage {
     this.load();
   }
 
+  /*
+    페이지 로드 시 검색 년월 현재 년으로 변경 후 조회
+  */
   load() : void{ 
-    this.searchYear = this.getDateYear();
+    this.searchYear = new Date().getFullYear();
     
     this.search();
   }
 
+  /*
+    조회
+    TODO : POST 방식으로 변경 예정
+           데이터가 없을 시 데이터 없음 처리 추가 예정
+  */
   search() {
     this.items = [];
 
@@ -57,6 +68,14 @@ export class PaymentPage {
     });
   }
 
+  /*
+    교육비, 기타 버튼 클릭 시
+    버튼 클릭 색상 변경 및 조회
+
+    type : edu, etc (교육비, 기타)
+    eduBtn : 교육비버튼 선언
+    etcBtn : 기타 버튼 선언
+  */
   clickSeachPay(type, eduBtn, etcBtn) { 
     if (type == "edu") { 
       eduBtn.color = ""; 
@@ -70,6 +89,9 @@ export class PaymentPage {
 
     this.search();
 
+    /*
+      alert 테스트중.
+    */
      let alert = this.alertCtrl.create({
        title: type,
        subTitle: '교육비를 클릭하셨습니다.',
@@ -79,16 +101,29 @@ export class PaymentPage {
      alert.present();
   }
   
+  /*
+    모달 테스트중..
+  */
   openModal() {
     const payModalOptions : ModalOptions = {
       enableBackdropDismiss: false,
-      showBackdrop: true
+      cssClass: "select-modal" 
     };
 
-    this.modalCtrl.create("ModalPage", {}, payModalOptions)
-                  .present();
+    const myModal: Modal = this.modalCtrl.create("ModalPage", {}, payModalOptions);
+
+    myModal.present();
+
+    myModal.onDidDismiss((data) => {
+        console.log(data);
+    })
+
   }
 
+  /*
+    20180101 형식을 2018.01.01 형식 변경
+    str : 년월일 (20180101)
+  */
   parseDate(str) {
     var y = str.substr(0,4),
     m = str.substr(4,2),
@@ -96,6 +131,14 @@ export class PaymentPage {
     return y + "." + m + "." + d  ;
   }
 
+  /*
+    수납 전용
+    교육비수납, 기타수납으로
+    교육비수납은 201801 -> 2018/01월분
+    기타수납은 수련복금액 -> 수련복금액
+
+    str : Title 문자
+  */
   parseTitle(str) {
     // 기타 수납의 경우는 문자열로 구성되어있음
     if (isNaN(str))
@@ -107,6 +150,11 @@ export class PaymentPage {
     return y + "/" + m + "월분";
   }
 
+  /*
+    숫자포맷 콤마 찍기
+    num : 금액 
+    {{ comma(data.amount) }}
+  */
   comma(num){
     var len, point, str; 
        
@@ -124,20 +172,20 @@ export class PaymentPage {
     return str;
   }
 
-  getDateYear() {
-    return new Date().getFullYear();
-  }
 
-  bfYearSearch(year) {
-    this.searchYear = parseInt(year) - 1;
+  /*
+    이전, 다음월 조회 (화살표 버튼 클릭)
+    year : 년도 (화면표시년도)
+    type : B - 이전월 / A - 다음월
+  */
+  yearSearch(year, type) {
+    if (type == 'B') {
+      this.searchYear = parseInt(year) - 1;
+    } else if (type == 'A') {
+      this.searchYear = parseInt(year) + 1;
+    }
 
     this.search();
   }
  
-  afYearSearch(year) {
-    this.searchYear = parseInt(year) + 1;
-
-    this.search();
-  }
-
 }
