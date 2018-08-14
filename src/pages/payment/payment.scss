@@ -1,3 +1,15 @@
 page-payment {
+    [padding] h1:first-child, [padding] h2:first-child, [padding] h3:first-child, [padding] h4:first-child, [padding] h5:first-child, [padding] h6:first-child {
+        margin-top: 0;
+    }
 
+    .item-md [item-start] {
+        color : blue;
+        width: 5em;
+        text-align: center;
+    }
+
+    [item-end] h2, [item-end] p {
+        text-align : right;
+    }
 }

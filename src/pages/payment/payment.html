@@ -2,20 +2,58 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>payment</ion-title>
+    <ion-title>수납조회</ion-title>
   </ion-navbar>
 
 </ion-header>
 
-
 <ion-content padding>
+    <div class="row">
+      <div class="col">
+          <button ion-button color="danger" block (click)="openModal()">팝업 테스트</button>
+      </div>
+    </div>
+    <div class="row">
+        <div class="col" style="text-align: center">
+          <h2>
+            <span (click)="bfYearSearch(year.innerHTML)"><<</span> 
+            <span #year [innerHTML]="searchYear"></span>년
+            <span (click)="afYearSearch(year.innerHTML)">>></span>
+          </h2>
+        </div>
+    </div>
+    <div class="row" >
+        <div class="col" style="text-align: center" >
+            <button ion-button #edu color=""      (click)="clickSeachPay('edu', edu, etc)">교육비</button>
+            <button ion-button #etc color="light" (click)="clickSeachPay('etc', edu, etc)">기타</button>
+        </div>
+    </div>
+
+  <ion-list>
+    <ion-item class="padding-left-0" *ngFor="let itemData of items; let i = index">
+        <div item-start>
+          <h2>{{ itemData.tms_pay_type }}</h2>
+        </div>
+        <h2>{{ parseTitle(itemData.tms_account_title) }}</h2>
+        <p>{{ parseDate(itemData.tms_account_date) }} </p>
+        <div item-end>
+          <h2>{{ itemData.tms_t_name }}</h2>
+          <p>{{ comma(itemData.tms_pay_fee) }}원</p>
+        </div>
+    </ion-item>
+  </ion-list>
+
+
+<!-- 
   <ion-list>
       <ion-item-divider></ion-item-divider>
       <ion-item-sliding *ngFor="let itemData of items; let i = index">
           <ion-item class="padding-left-0">
+              <h2 item-start>무통장</h2>
               <h2>{{ i + 1 }}. {{ itemData.tms_code }}. {{ itemData.tel }}</h2>
+              <h2 item-end>View</h2>
           </ion-item>
       </ion-item-sliding>
-  </ion-list>
+  </ion-list> -->
 
 </ion-content>
